@@ -2,18 +2,25 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>基础文字样式</title>
+    <title>文字居中样式</title>
+    <!-- 清除页面默认边距，防止居中偏移 -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
-<body>
-    <!-- 单行整合所有效果：居中+加粗+字体+放大 -->
-    <div style="
-        text-align: center; /* 水平居中 */
-        font-weight: bold; /* 字体加粗 */
-        font-family: '微软雅黑', '黑体', sans-serif; /* 字体，优先微软雅黑，无则用黑体，最后通用无衬线字体 */
-        font-size: 24px; /* 字体大小，默认一般16px，24px为放大效果，数值可改 */
-        color: #333; /* 可选：字体颜色，方便看效果 */
+<!-- 父容器占满全屏，实现全屏上下+水平居中 -->
+<body style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <!-- 核心文字XX，所有样式均标注可修改项 -->
+    <span style="
+        font-weight: bold; /* 加粗：bold=加粗，normal=取消加粗 */
+        font-family: '微软雅黑', 'PingFang SC', sans-serif; /* 可修改字体，顺序为优先降级 */
+        font-size: 88px; /* 可修改字号，数值越大文字越大 */
+        color: #333; /* 可选：修改文字颜色 */
     ">
         张杰
-    </div>
+    </span>
 </body>
 </html>

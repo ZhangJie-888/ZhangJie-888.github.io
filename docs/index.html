@@ -18,82 +18,89 @@
             pointer-events: auto;
         }
 
-        /* 赛博朋克核心背景：纯CSS实现，无额外DOM */
+        /* 赛博朋克渐变背景：替换纯黑，保留网格+霓虹感 */
         body {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 1rem;
-            background: #000; /* 暗黑底，赛博朋克基础 */
+            /* 赛博朋克渐变底（深蓝→紫→黑），比纯黑更有层次 */
+            background: linear-gradient(135deg, #0a043c, #150750, #000);
             position: relative;
             overflow: hidden;
-            /* 赛博朋克霓虹渐变+网格（单一层，轻量化） */
+            /* 轻量化网格，和渐变融合 */
             background-image: 
                 linear-gradient(45deg, rgba(255, 0, 200, 0.1) 1px, transparent 1px),
                 linear-gradient(135deg, rgba(0, 200, 255, 0.1) 1px, transparent 1px);
-            background-size: 40px 40px; /* 轻量化网格，加载快 */
+            background-size: 40px 40px;
             animation: gridFlow 15s linear infinite;
         }
 
-        /* 网格缓慢流动动画（轻量，仅改背景位置） */
+        /* 网格流动动画 */
         @keyframes gridFlow {
             0% { background-position: 0 0; }
             100% { background-position: 40px 40px; }
         }
 
-        /* 赛博朋克轻量动态霓虹点（手机端增强） */
+        /* 赛博朋克霓虹点（基础样式） */
         .cyber-dot {
             position: absolute;
             border-radius: 50%;
             pointer-events: none;
             z-index: 1;
-            /* 霓虹发光效果（轻量化，无复杂模糊） */
             box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
         }
 
-        /* PC端动态点（基础尺寸） */
+        /* 5个霓虹点：不同颜色+快速度动画 */
         .cyber-dot:nth-child(1) {
             width: 20px; height: 20px;
-            color: #ff00c8; /* 粉紫霓虹 */
+            color: #ff00c8; /* 粉紫 */
             top: 10%; left: 15%;
-            animation: cyberFloat 8s ease-in-out infinite alternate;
+            animation: cyberFloat 4s ease-in-out infinite alternate; /* 速度翻倍（8s→4s） */
         }
         .cyber-dot:nth-child(2) {
             width: 15px; height: 15px;
-            color: #00c8ff; /* 青蓝霓虹 */
+            color: #00c8ff; /* 青蓝 */
             top: 70%; left: 20%;
-            animation: cyberFloat 10s ease-in-out infinite alternate;
-            animation-delay: 1s;
+            animation: cyberFloat 5s ease-in-out infinite alternate;
+            animation-delay: 0.5s;
         }
         .cyber-dot:nth-child(3) {
             width: 25px; height: 25px;
-            color: #00ff9c; /* 荧光绿霓虹 */
+            color: #00ff9c; /* 荧光绿 */
             top: 30%; left: 80%;
-            animation: cyberFloat 12s ease-in-out infinite alternate;
-            animation-delay: 2s;
+            animation: cyberFloat 3.5s ease-in-out infinite alternate; /* 更快 */
+            animation-delay: 1s;
         }
         .cyber-dot:nth-child(4) {
             width: 18px; height: 18px;
             color: #ff00c8;
             top: 80%; left: 70%;
-            animation: cyberFloat 9s ease-in-out infinite alternate;
-            animation-delay: 3s;
+            animation: cyberFloat 4.5s ease-in-out infinite alternate;
+            animation-delay: 1.5s;
+        }
+        .cyber-dot:nth-child(5) { /* 新增第5个点 */
+            width: 22px; height: 22px;
+            color: #00c8ff;
+            top: 50%; left: 40%;
+            animation: cyberFloat 3s ease-in-out infinite alternate; /* 最快 */
+            animation-delay: 2s;
         }
 
-        /* 赛博朋克漂浮动画（幅度适中，动感明显） */
+        /* 快速度漂浮动画（幅度不变，时长缩短=速度加快） */
         @keyframes cyberFloat {
             0% { transform: translate(0, 0) scale(1); }
             100% { transform: translate(30px, -50px) scale(1.2); }
         }
 
-        /* 赛博朋克卡片（核心风格，轻量化） */
+        /* 赛博朋克卡片 */
         .card {
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-radius: 20px;
-            border: 1px solid rgba(255, 0, 200, 0.4); /* 霓虹边框 */
+            border: 1px solid rgba(255, 0, 200, 0.4);
             padding: 2rem 1.5rem;
             max-width: 90%;
             width: 100%;
@@ -110,7 +117,7 @@
             box-shadow: 0 0 25px rgba(0, 200, 255, 0.3);
         }
 
-        /* 赛博朋克头像（霓虹发光边框） */
+        /* 头像样式 */
         .avatar {
             width: 100px;
             height: 100px;
@@ -125,7 +132,7 @@
             box-shadow: 0 0 15px rgba(255, 0, 200, 0.3);
         }
 
-        /* 赛博朋克文本（霓虹阴影） */
+        /* 文本样式 */
         h1 {
             text-align: center;
             font-size: 1.8rem;
@@ -150,7 +157,7 @@
             color: #e0e0e0;
         }
 
-        /* 赛博朋克社交链接 */
+        /* 社交链接样式 */
         .social {
             display: flex;
             justify-content: center;
@@ -196,26 +203,26 @@
         /* 禁止打印 */
         @media print { html, body { display: none !important; } }
 
-        /* ========== 手机端赛博朋克效果增强 ========== */
+        /* 手机端效果增强 */
         @media (max-width: 768px) {
-            /* 手机端霓虹点放大+发光更强 */
             .cyber-dot {
                 box-shadow: 0 0 15px currentColor, 0 0 30px currentColor !important;
             }
+            /* 5个点手机端放大 */
             .cyber-dot:nth-child(1) { width: 30px; height: 30px; }
             .cyber-dot:nth-child(2) { width: 25px; height: 25px; }
             .cyber-dot:nth-child(3) { width: 35px; height: 35px; }
             .cyber-dot:nth-child(4) { width: 28px; height: 28px; }
-            /* 手机端漂浮幅度更大，更显眼 */
+            .cyber-dot:nth-child(5) { width: 32px; height: 32px; }
+            /* 手机端漂浮幅度更大 */
             @keyframes cyberFloat {
                 0% { transform: translate(0, 0) scale(1); }
                 100% { transform: translate(50px, -70px) scale(1.3); }
             }
-            /* 手机端网格更密，赛博感更强 */
             body { background-size: 30px 30px !important; }
         }
 
-        /* 小屏手机额外适配 */
+        /* 小屏手机适配 */
         @media (max-width: 375px) {
             .avatar { width: 80px; height: 80px; }
             h1 { font-size: 1.6rem; }
@@ -223,12 +230,12 @@
             .custom-icon { width: 26px; height: 26px; }
         }
     </style>
-    <!-- 仅保留必要外部资源，无冗余库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- 4个轻量赛博朋克动态霓虹点（比6个更轻，加载更快） -->
+    <!-- 5个赛博朋克动态霓虹点 -->
+    <div class="cyber-dot"></div>
     <div class="cyber-dot"></div>
     <div class="cyber-dot"></div>
     <div class="cyber-dot"></div>
@@ -253,7 +260,7 @@
         </div>
     </div>
 
-    <!-- 防护逻辑（极简版，无性能消耗） -->
+    <!-- 防护逻辑 -->
     <script>
         ['contextmenu', 'copy', 'cut', 'paste'].forEach(event => {
             document.addEventListener(event, e => e.preventDefault());

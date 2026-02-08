@@ -18,31 +18,84 @@
             pointer-events: auto;
         }
 
-        /* 核心：液态渐变背景（无模糊/无复杂层，加载极快） */
+        /* 核心：液态渐变背景 + 轻量动态元素容器 */
         body {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 1rem;
-            /* 液态渐变：4色无缝流动，仅1层背景，无额外DOM */
             background: linear-gradient(120deg, #84fab0, #8fd3f4, #d484fa, #f48f8f);
             background-size: 400% 400%;
             animation: liquidFlow 8s ease-in-out infinite;
-            /* 取消overflow:hidden，减少渲染压力 */
+            position: relative;
+            overflow: hidden; /* 防止动态元素溢出屏幕 */
         }
 
-        /* 液态流动动画（轻量，仅改背景位置） */
+        /* 液态流动动画 */
         @keyframes liquidFlow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* 卡片：极简半透，无复杂阴影，加载快 */
+        /* 轻量动态漂浮元素（仅6个，极低性能消耗） */
+        .float-dot {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(2px);
+            pointer-events: none; /* 不影响点击交互 */
+            z-index: 1; /* 在卡片下方，不遮挡内容 */
+        }
+
+        /* 给每个圆点定义不同大小、位置、动画时长（避免同步运动） */
+        .float-dot:nth-child(1) {
+            width: 30px; height: 30px;
+            top: 10%; left: 15%;
+            animation: float 8s ease-in-out infinite alternate;
+        }
+        .float-dot:nth-child(2) {
+            width: 20px; height: 20px;
+            top: 70%; left: 20%;
+            animation: float 10s ease-in-out infinite alternate;
+            animation-delay: 1s;
+        }
+        .float-dot:nth-child(3) {
+            width: 40px; height: 40px;
+            top: 30%; left: 80%;
+            animation: float 12s ease-in-out infinite alternate;
+            animation-delay: 2s;
+        }
+        .float-dot:nth-child(4) {
+            width: 25px; height: 25px;
+            top: 80%; left: 70%;
+            animation: float 9s ease-in-out infinite alternate;
+            animation-delay: 3s;
+        }
+        .float-dot:nth-child(5) {
+            width: 35px; height: 35px;
+            top: 50%; left: 5%;
+            animation: float 11s ease-in-out infinite alternate;
+            animation-delay: 0.5s;
+        }
+        .float-dot:nth-child(6) {
+            width: 15px; height: 15px;
+            top: 20%; left: 60%;
+            animation: float 7s ease-in-out infinite alternate;
+            animation-delay: 4s;
+        }
+
+        /* 漂浮动画：仅上下+左右小幅移动，无复杂变换 */
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(20px, -30px) scale(1.1); }
+        }
+
+        /* 卡片：层级高于圆点，保证内容清晰 */
         .card {
             background: rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(8px); /* 轻度模糊，降低性能消耗 */
+            backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -50,19 +103,20 @@
             max-width: 90%;
             width: 100%;
             color: white;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* 轻量化阴影 */
-            transition: transform 0.2s ease; /* 缩短动画时长，更流畅 */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
             position: relative;
+            z-index: 2; /* 高于动态圆点 */
         }
 
         .card:hover { transform: translateY(-3px); }
 
-        /* 头像：极简样式，无复杂发光 */
+        /* 头像样式 */
         .avatar {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            border: 2px solid white; /* 减薄边框，降低渲染 */
+            border: 2px solid white;
             margin: 0 auto 1.5rem;
             display: block;
             object-fit: cover;
@@ -71,12 +125,12 @@
             pointer-events: none;
         }
 
-        /* 文本：极简样式，无多层阴影 */
+        /* 文本样式 */
         h1 {
             text-align: center;
             font-size: 1.8rem;
             margin-bottom: 0.5rem;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* 轻量化阴影 */
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .title {
@@ -93,7 +147,7 @@
             font-size: 1rem;
         }
 
-        /* 社交链接：极简交互，无复杂光效 */
+        /* 社交链接样式 */
         .social {
             display: flex;
             justify-content: center;
@@ -120,7 +174,7 @@
         .social-link:hover {
             color: #84fab0;
             background-color: #ffffff;
-            transform: scale(1.08); /* 小幅缩放，更流畅 */
+            transform: scale(1.08);
         }
 
         .custom-icon {
@@ -132,7 +186,7 @@
         /* 禁止打印 */
         @media print { html, body { display: none !important; } }
 
-        /* 小屏适配（极简规则） */
+        /* 小屏适配：动态圆点自动适配，无需额外调整 */
         @media (max-width: 375px) {
             .avatar { width: 80px; height: 80px; }
             h1 { font-size: 1.6rem; }
@@ -140,12 +194,19 @@
             .custom-icon { width: 26px; height: 26px; }
         }
     </style>
-    <!-- 仅保留必要外部资源，无粒子库等大文件 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- 无额外背景DOM层，仅1个卡片，减少渲染节点 -->
+    <!-- 6个轻量动态漂浮圆点（仅DOM节点，无额外资源） -->
+    <div class="float-dot"></div>
+    <div class="float-dot"></div>
+    <div class="float-dot"></div>
+    <div class="float-dot"></div>
+    <div class="float-dot"></div>
+    <div class="float-dot"></div>
+
+    <!-- 卡片内容 -->
     <div class="card">
         <img src="myavatar.jpg" alt="头像" class="avatar" />
         <h1>张杰</h1>
@@ -164,14 +225,12 @@
         </div>
     </div>
 
-    <!-- 防护逻辑（极简版，无冗余） -->
+    <!-- 防护逻辑（极简版） -->
     <script>
-        // 合并事件绑定，减少监听数量
         ['contextmenu', 'copy', 'cut', 'paste'].forEach(event => {
             document.addEventListener(event, e => e.preventDefault());
         });
 
-        // 简化快捷键判断，减少计算
         document.addEventListener('keydown', e => {
             if (e.key === 'F12' || 
                 (e.ctrlKey && ['u','s','p'].includes(e.key)) ||
@@ -181,7 +240,6 @@
             }
         });
 
-        // 轻量化防调试（缩短检测间隔，减少卡顿）
         setInterval(() => {
             const d = new Date();
             debugger;
@@ -189,9 +247,8 @@
                 document.body.innerHTML = '请关闭开发者工具';
                 window.location = 'about:blank';
             }
-        }, 150); // 间隔从100ms改为150ms，降低CPU占用
+        }, 150);
 
-        // 防iframe嵌套（极简判断）
         if (window.top !== window.self) window.top.location = window.location;
     </script>
 </body>

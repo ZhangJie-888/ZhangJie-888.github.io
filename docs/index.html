@@ -18,79 +18,100 @@
             pointer-events: auto;
         }
 
-        /* 炫酷背景容器：粒子+动态渐变 */
+        /* 赛博朋克背景容器：霓虹网格+动态光效 */
         body {
             min-height: 100vh;
             position: relative;
-            overflow: hidden; /* 防止粒子溢出 */
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 1rem;
+            background: #000; /* 黑色底更突出霓虹 */
         }
 
-        /* 动态渐变背景层（底层） */
-        .bg-gradient {
+        /* 霓虹网格背景层（核心炫酷效果） */
+        .cyber-bg {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, #000428, #004e92, #00f260, #0575e6);
-            background-size: 400% 400%;
-            animation: gradientMove 20s ease infinite;
+            background: 
+                linear-gradient(rgba(10, 10, 50, 0.8) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(10, 10, 50, 0.8) 1px, transparent 1px);
+            background-size: 50px 50px; /* 网格大小 */
             z-index: 1;
+            animation: gridMove 15s linear infinite;
         }
 
-        /* 粒子特效层（中层） */
-        .particles {
+        /* 动态霓虹光效层 */
+        .neon-light {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at center, rgba(255, 0, 200, 0.2), transparent 40%),
+                radial-gradient(circle at 20% 80%, rgba(0, 200, 255, 0.2), transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(0, 255, 150, 0.2), transparent 40%);
             z-index: 2;
+            animation: neonPulse 8s ease-in-out infinite alternate, lightMove 25s linear infinite;
+            filter: blur(80px);
         }
 
-        /* 卡片样式：适配移动端 + 层级置顶 */
+        /* 卡片样式：赛博朋克风格适配 */
         .card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.6); /* 半透黑更搭霓虹 */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 0, 200, 0.3); /* 粉紫霓虹边框 */
             padding: 2rem 1.5rem;
             max-width: 90%;
             width: 100%;
-            color: white;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            transition: transform 0.3s ease;
+            color: #fff;
+            box-shadow: 
+                0 0 15px rgba(255, 0, 200, 0.2),
+                0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
             position: relative;
-            z-index: 3; /* 保证卡片在最上层 */
+            z-index: 3;
         }
 
-        .card:hover { transform: translateY(-5px); }
+        /* 卡片悬浮霓虹效果 */
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 0 25px rgba(255, 0, 200, 0.4),
+                0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            border-color: rgba(0, 200, 255, 0.5); /* 悬浮变蓝紫 */
+        }
 
-        /* 头像样式 */
+        /* 头像：添加霓虹发光边框 */
         .avatar {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            border: 3px solid white;
+            border: 3px solid rgba(255, 0, 200, 0.6); /* 霓虹边框 */
             margin: 0 auto 1.5rem;
             display: block;
             object-fit: cover;
             -webkit-user-drag: none !important;
             user-drag: none !important;
             pointer-events: none;
+            box-shadow: 0 0 20px rgba(255, 0, 200, 0.4); /* 头像发光 */
         }
 
-        /* 文本样式 */
+        /* 文本样式：赛博朋克霓虹文字 */
         h1 {
             text-align: center;
             font-size: 1.8rem;
             margin-bottom: 0.5rem;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            text-shadow: 
+                0 0 5px rgba(255, 0, 200, 0.8),
+                0 0 10px rgba(0, 200, 255, 0.5);
         }
 
         .title {
@@ -98,6 +119,8 @@
             font-size: 1rem;
             opacity: 0.9;
             margin-bottom: 1.5rem;
+            color: rgba(0, 200, 255, 0.9); /* 青蓝色副标题 */
+            text-shadow: 0 0 5px rgba(0, 200, 255, 0.5);
         }
 
         .bio {
@@ -105,9 +128,10 @@
             margin-bottom: 2rem;
             line-height: 1.6;
             font-size: 1rem;
+            color: #e0e0e0;
         }
 
-        /* 社交链接样式 */
+        /* 社交链接：赛博朋克霓虹风格 */
         .social {
             display: flex;
             justify-content: center;
@@ -122,18 +146,20 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 0, 200, 0.5);
             margin: 0 5px;
-            color: #004e92;
+            color: rgba(255, 0, 200, 0.9);
             text-decoration: none;
             font-size: 18px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            box-shadow: 0 0 10px rgba(255, 0, 200, 0.2);
             transition: all 0.3s ease;
         }
 
         .social-link:hover {
-            color: #00f260;
-            background-color: #ffffff;
+            color: rgba(0, 200, 255, 1);
+            border-color: rgba(0, 200, 255, 0.8);
+            box-shadow: 0 0 15px rgba(0, 200, 255, 0.5);
             transform: scale(1.1);
         }
 
@@ -141,9 +167,13 @@
             width: 30px;
             height: 30px;
             object-fit: contain;
+            filter: drop-shadow(0 0 5px rgba(255, 0, 200, 0.5));
         }
 
-        .social-link:hover .custom-icon { opacity: 0.9; }
+        .social-link:hover .custom-icon {
+            filter: drop-shadow(0 0 8px rgba(0, 200, 255, 0.8));
+            opacity: 0.9;
+        }
 
         /* 禁止打印 */
         @media print { html, body { display: none !important; } }
@@ -154,25 +184,35 @@
             h1 { font-size: 1.6rem; }
             .social-link { width: 36px; height: 36px; }
             .custom-icon { width: 26px; height: 26px; }
+            .cyber-bg { background-size: 30px 30px; } /* 小屏网格更小 */
         }
 
-        /* 渐变动画 */
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* 网格移动动画 */
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+
+        /* 霓虹光效脉动 */
+        @keyframes neonPulse {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        /* 光效移动 */
+        @keyframes lightMove {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(20px, 20px) rotate(5deg); }
         }
     </style>
-    <!-- 引入粒子特效库 -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- 渐变背景层 -->
-    <div class="bg-gradient"></div>
-    <!-- 粒子特效层 -->
-    <div class="particles" id="particles-js"></div>
+    <!-- 赛博朋克网格背景 -->
+    <div class="cyber-bg"></div>
+    <!-- 动态霓虹光效 -->
+    <div class="neon-light"></div>
     <!-- 卡片内容 -->
     <div class="card">
         <img src="myavatar.jpg" alt="头像" class="avatar" />
@@ -193,75 +233,6 @@
     </div>
 
     <script>
-        // 初始化粒子特效（核心炫酷点）
-        particlesJS('particles-js', {
-            "particles": {
-                "number": {
-                    "value": 80, // 粒子数量
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": "#ffffff" // 粒子颜色（白色，适配渐变背景）
-                },
-                "shape": {
-                    "type": "circle" // 粒子形状：circle/edge/triangle/star等
-                },
-                "opacity": {
-                    "value": 0.7,
-                    "random": true
-                },
-                "size": {
-                    "value": 3,
-                    "random": true
-                },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150, // 粒子连线距离
-                    "color": "#ffffff",
-                    "opacity": 0.2,
-                    "width": 1
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 2, // 粒子移动速度
-                    "direction": "none",
-                    "random": true,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false
-                }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "grab" // 鼠标悬浮时粒子吸附连线
-                    },
-                    "onclick": {
-                        "enable": true,
-                        "mode": "push" // 点击时新增粒子
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "grab": {
-                        "distance": 140,
-                        "line_linked": {
-                            "opacity": 0.8
-                        }
-                    },
-                    "push": {
-                        "particles_nb": 4
-                    }
-                }
-            },
-            "retina_detect": true // 适配视网膜屏
-        });
-
         // 防护逻辑（保留所有原有功能）
         ['contextmenu', 'copy', 'cut', 'paste'].forEach(event => {
             document.addEventListener(event, e => e.preventDefault());

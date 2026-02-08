@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>张杰的个人主页</title>
     <style>
-        /* 基础重置 + 全局样式 */
+        /* 基础重置（极简版） */
         * {
             margin: 0;
             padding: 0;
@@ -18,100 +18,65 @@
             pointer-events: auto;
         }
 
-        /* 赛博朋克背景容器：霓虹网格+动态光效 */
+        /* 核心：液态渐变背景（无模糊/无复杂层，加载极快） */
         body {
             min-height: 100vh;
-            position: relative;
-            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 1rem;
-            background: #000; /* 黑色底更突出霓虹 */
+            /* 液态渐变：4色无缝流动，仅1层背景，无额外DOM */
+            background: linear-gradient(120deg, #84fab0, #8fd3f4, #d484fa, #f48f8f);
+            background-size: 400% 400%;
+            animation: liquidFlow 8s ease-in-out infinite;
+            /* 取消overflow:hidden，减少渲染压力 */
         }
 
-        /* 霓虹网格背景层（核心炫酷效果） */
-        .cyber-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(rgba(10, 10, 50, 0.8) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(10, 10, 50, 0.8) 1px, transparent 1px);
-            background-size: 50px 50px; /* 网格大小 */
-            z-index: 1;
-            animation: gridMove 15s linear infinite;
+        /* 液态流动动画（轻量，仅改背景位置） */
+        @keyframes liquidFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        /* 动态霓虹光效层 */
-        .neon-light {
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: 
-                radial-gradient(circle at center, rgba(255, 0, 200, 0.2), transparent 40%),
-                radial-gradient(circle at 20% 80%, rgba(0, 200, 255, 0.2), transparent 40%),
-                radial-gradient(circle at 80% 20%, rgba(0, 255, 150, 0.2), transparent 40%);
-            z-index: 2;
-            animation: neonPulse 8s ease-in-out infinite alternate, lightMove 25s linear infinite;
-            filter: blur(80px);
-        }
-
-        /* 卡片样式：赛博朋克风格适配 */
+        /* 卡片：极简半透，无复杂阴影，加载快 */
         .card {
-            background: rgba(0, 0, 0, 0.6); /* 半透黑更搭霓虹 */
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px); /* 轻度模糊，降低性能消耗 */
+            -webkit-backdrop-filter: blur(8px);
             border-radius: 20px;
-            border: 1px solid rgba(255, 0, 200, 0.3); /* 粉紫霓虹边框 */
+            border: 1px solid rgba(255, 255, 255, 0.3);
             padding: 2rem 1.5rem;
             max-width: 90%;
             width: 100%;
-            color: #fff;
-            box-shadow: 
-                0 0 15px rgba(255, 0, 200, 0.2),
-                0 8px 32px 0 rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* 轻量化阴影 */
+            transition: transform 0.2s ease; /* 缩短动画时长，更流畅 */
             position: relative;
-            z-index: 3;
         }
 
-        /* 卡片悬浮霓虹效果 */
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 
-                0 0 25px rgba(255, 0, 200, 0.4),
-                0 8px 32px 0 rgba(0, 0, 0, 0.5);
-            border-color: rgba(0, 200, 255, 0.5); /* 悬浮变蓝紫 */
-        }
+        .card:hover { transform: translateY(-3px); }
 
-        /* 头像：添加霓虹发光边框 */
+        /* 头像：极简样式，无复杂发光 */
         .avatar {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            border: 3px solid rgba(255, 0, 200, 0.6); /* 霓虹边框 */
+            border: 2px solid white; /* 减薄边框，降低渲染 */
             margin: 0 auto 1.5rem;
             display: block;
             object-fit: cover;
             -webkit-user-drag: none !important;
             user-drag: none !important;
             pointer-events: none;
-            box-shadow: 0 0 20px rgba(255, 0, 200, 0.4); /* 头像发光 */
         }
 
-        /* 文本样式：赛博朋克霓虹文字 */
+        /* 文本：极简样式，无多层阴影 */
         h1 {
             text-align: center;
             font-size: 1.8rem;
             margin-bottom: 0.5rem;
-            text-shadow: 
-                0 0 5px rgba(255, 0, 200, 0.8),
-                0 0 10px rgba(0, 200, 255, 0.5);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* 轻量化阴影 */
         }
 
         .title {
@@ -119,8 +84,6 @@
             font-size: 1rem;
             opacity: 0.9;
             margin-bottom: 1.5rem;
-            color: rgba(0, 200, 255, 0.9); /* 青蓝色副标题 */
-            text-shadow: 0 0 5px rgba(0, 200, 255, 0.5);
         }
 
         .bio {
@@ -128,10 +91,9 @@
             margin-bottom: 2rem;
             line-height: 1.6;
             font-size: 1rem;
-            color: #e0e0e0;
         }
 
-        /* 社交链接：赛博朋克霓虹风格 */
+        /* 社交链接：极简交互，无复杂光效 */
         .social {
             display: flex;
             justify-content: center;
@@ -146,74 +108,44 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 0, 200, 0.5);
+            background-color: rgba(255, 255, 255, 0.9);
             margin: 0 5px;
-            color: rgba(255, 0, 200, 0.9);
+            color: #667eea;
             text-decoration: none;
             font-size: 18px;
-            box-shadow: 0 0 10px rgba(255, 0, 200, 0.2);
-            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
         }
 
         .social-link:hover {
-            color: rgba(0, 200, 255, 1);
-            border-color: rgba(0, 200, 255, 0.8);
-            box-shadow: 0 0 15px rgba(0, 200, 255, 0.5);
-            transform: scale(1.1);
+            color: #84fab0;
+            background-color: #ffffff;
+            transform: scale(1.08); /* 小幅缩放，更流畅 */
         }
 
         .custom-icon {
             width: 30px;
             height: 30px;
             object-fit: contain;
-            filter: drop-shadow(0 0 5px rgba(255, 0, 200, 0.5));
-        }
-
-        .social-link:hover .custom-icon {
-            filter: drop-shadow(0 0 8px rgba(0, 200, 255, 0.8));
-            opacity: 0.9;
         }
 
         /* 禁止打印 */
         @media print { html, body { display: none !important; } }
 
-        /* 小屏适配 */
+        /* 小屏适配（极简规则） */
         @media (max-width: 375px) {
             .avatar { width: 80px; height: 80px; }
             h1 { font-size: 1.6rem; }
             .social-link { width: 36px; height: 36px; }
             .custom-icon { width: 26px; height: 26px; }
-            .cyber-bg { background-size: 30px 30px; } /* 小屏网格更小 */
-        }
-
-        /* 网格移动动画 */
-        @keyframes gridMove {
-            0% { background-position: 0 0; }
-            100% { background-position: 50px 50px; }
-        }
-
-        /* 霓虹光效脉动 */
-        @keyframes neonPulse {
-            0% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
-
-        /* 光效移动 */
-        @keyframes lightMove {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(20px, 20px) rotate(5deg); }
         }
     </style>
+    <!-- 仅保留必要外部资源，无粒子库等大文件 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- 赛博朋克网格背景 -->
-    <div class="cyber-bg"></div>
-    <!-- 动态霓虹光效 -->
-    <div class="neon-light"></div>
-    <!-- 卡片内容 -->
+    <!-- 无额外背景DOM层，仅1个卡片，减少渲染节点 -->
     <div class="card">
         <img src="myavatar.jpg" alt="头像" class="avatar" />
         <h1>张杰</h1>
@@ -232,24 +164,24 @@
         </div>
     </div>
 
+    <!-- 防护逻辑（极简版，无冗余） -->
     <script>
-        // 防护逻辑（保留所有原有功能）
+        // 合并事件绑定，减少监听数量
         ['contextmenu', 'copy', 'cut', 'paste'].forEach(event => {
             document.addEventListener(event, e => e.preventDefault());
         });
 
+        // 简化快捷键判断，减少计算
         document.addEventListener('keydown', e => {
-            const forbidden = ['F12', 'u', 's', 'p', 'i', 'j', 'c', 'k'];
-            if (forbidden.includes(e.key) && (
-                e.key === 'F12' ||
-                e.ctrlKey && !e.shiftKey ||
-                e.ctrlKey && e.shiftKey && ['i','j','c','k'].includes(e.key)
-            )) {
+            if (e.key === 'F12' || 
+                (e.ctrlKey && ['u','s','p'].includes(e.key)) ||
+                (e.ctrlKey && e.shiftKey && ['i','j','c','k'].includes(e.key))) {
                 e.preventDefault();
                 return false;
             }
         });
 
+        // 轻量化防调试（缩短检测间隔，减少卡顿）
         setInterval(() => {
             const d = new Date();
             debugger;
@@ -257,8 +189,9 @@
                 document.body.innerHTML = '请关闭开发者工具';
                 window.location = 'about:blank';
             }
-        }, 100);
+        }, 150); // 间隔从100ms改为150ms，降低CPU占用
 
+        // 防iframe嵌套（极简判断）
         if (window.top !== window.self) window.top.location = window.location;
     </script>
 </body>
